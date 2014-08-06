@@ -1,0 +1,117 @@
+<link rel="import" href="../../vendor/polymer/polymer.html">
+<link rel="import" href="../../vendor/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../vendor/core-icons/core-icons.html">
+<link rel="import" href="../../vendor/core-ajax/core-ajax.html">
+<link rel="import" href="../../vendor/core-list/core-list.html">
+<link rel="import" href="../../vendor/core-item/core-item.html">
+
+<link rel="import" href="../file/folder-up.html">
+<link rel="import" href="../file/file-entry.html">
+
+<polymer-element name="file-explorer">
+
+  <template>
+    <style type="text/css">
+      .header {
+        position: fixed;
+        top: 0;
+        height: 85px;
+        width: 100%;
+        z-index: 2;
+      }
+      
+      paper-tabs {
+        width: 100%;
+        margin: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: #007DE3;
+        color: #fff;
+        box-shadow: none;
+      }
+
+      paper-tab{
+        margin-bottom: 6px;
+      }
+
+      paper-tab.core-selected{
+        border-bottom: 6px solid #fff;
+        margin-bottom: 0px;
+      }
+
+      paper-tabs::shadow #selectionBar {
+        background-color: #fff;
+      }
+      
+      paper-tab::shadow #ink {
+        color: #fff;
+      }
+
+      core-item.current-folder {
+        background: #DCDCDC;
+        color: #474747;
+        text-align: center;
+        font-weight: 400;
+        font-size: 1rem;
+      }
+
+      .content {
+        padding: 0px 5px;
+        margin-top: 85px;
+        overflow: hidden;
+      }
+
+      .hide {
+        display: none;
+      }
+    </style>
+
+    <div>
+      <core-ajax auto="true" url="https://api.dropbox.com/1/metadata/dropbox{{currentFolder}}" params='{"access_token": "{{accessToken}}" }' handleAs="json" on-core-response="{{handleResponse}}"></core-ajax>
+
+      <div class="header">
+        <paper-tabs id="tabs" selected="history">
+          <paper-tab name="history"><core-icon src="../../img/dropbox-white.png"></core-icon></paper-tab>
+          <paper-tab name="offline"><core-icon icon="star"></core-icon></paper-tab>
+          <paper-tab name="settings"><core-icon icon="settings"></core-icon></paper-tab>
+        </paper-tabs>
+
+        <core-item class="current-folder bottom indent" horizontal center-justified layout flex>
+          <div>{{ api.path | toFilename }}</div>
+        </core-item>
+      </div>
+
+      <div class="content">
+        <folder-up class="{{ {hide: api.path === '/'} }} | tokenList" currentfolder="{{currentFolder}}"></folder-up>
+        <template repeat="{{file in api.contents}}">
+          <file-entry file="{{file}}" currentfolder="{{currentFolder}}"></file-entry>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer('file-explorer', {
+      accessToken: 'WRITE_YOUR_DROPBOX_ACCESS_TOKEN',
+      currentFolder: '/',
+      handleResponse: function handleResponse(evt, xhr) {
+
+        this.api = xhr.response;
+
+      },
+      toFilename: function toFilename(value) {
+        if(!value) {
+          return;
+        }
+
+        if(value === '/') {
+          return 'Dropbox';
+        }
+
+        return value.replace(/.*\//, '');
+      }
+    });
+  </script>
+</polymer-element>

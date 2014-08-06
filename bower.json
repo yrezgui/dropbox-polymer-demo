@@ -1,0 +1,30 @@
+{
+  "name": "doroppu",
+  "version": "0.0.0",
+  "homepage": "https://github.com/yrezgui/doroppu",
+  "authors": [
+    "Yacine Rezgui <rezgui.y@gmail.com>"
+  ],
+  "description": "Dropbox for Firefox OS",
+  "keywords": [
+    "dropbox",
+    "firefoxos",
+    "html5",
+    "mobile",
+    "polymer"
+  ],
+  "license": "Apache Licence v2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.4",
+    "core-elements": "Polymer/core-elements#~0.3.4",
+    "paper-elements": "Polymer/paper-elements#~0.3.4"
+  }
+}

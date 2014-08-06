@@ -1,0 +1,63 @@
+<link rel="import" href="../../vendor/polymer/polymer.html">
+<link rel="import" href="../../vendor/core-icon-button/core-icon-button.html">
+<link rel="import" href="../../vendor/core-item/core-item.html">
+
+<polymer-element name="folder-up" attributes="currentfolder">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        background-color: white;
+        width: 100%;
+        font-size: 1.2rem;
+        font-weight: 300;
+        padding: 10px 5px;
+        border-bottom: 1px solid #DBDADB; 
+      }
+      .filename {
+        font-size: 18px;
+        color: #7AA2CF;
+      }
+
+      .is-root {
+        display: none;
+      }
+    </style>
+
+    <core-item src="../../img/file-icons/folder_up.png">
+      <div flex>
+        <div class="filename" on-click="{{onClick}}">Up to {{ currentfolder | getParentFilename }}</div>
+      </div>
+    </core-item>
+  </template>
+  <script>
+    Polymer('folder-up', {
+      getParentFilename: function getParentFilename(value) {
+        if(!value) {
+          return;
+        }
+
+        var rawMatch = value.match(/.*\/(.*)\/.*/);
+
+        if(!rawMatch) {
+          return 'Dropbox';
+        }
+
+        return rawMatch[1];
+      },
+      getParentPath: function getParentPath() {
+        var parentPath = this.currentfolder.slice(0, this.currentfolder.lastIndexOf('/'));
+
+        if(!parentPath) {
+          return '/';
+        }
+
+        return parentPath;
+      },
+      onClick: function onClick() {
+        this.currentfolder = this.getParentPath();
+      }
+    });
+  </script>
+</polymer-element>

@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Doroppu
+    meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no")
+
+    script(src="vendor/platform/platform.js")
+    link(rel="import", href="elements/file-explorer/file-explorer.html")
+
+    style.
+      html,body {
+        height: 100%;
+        margin: 0;
+        background: #ffffff;
+        font-family: 'RobotoDraft', sans-serif;
+      }
+
+  body(unresolved touch-action="auto")
+    file-explorer
